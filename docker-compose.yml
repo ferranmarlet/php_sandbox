@@ -1,0 +1,16 @@
+version: '3.6'
+services:
+  fpm:
+    build:
+      context: fpm
+    container_name: sandbox-fpm
+    working_dir: /var/www/sandbox
+    volumes:
+    - ../any_host_folder:/var/www/sandbox
+
+  server:
+    build:
+      context: apache
+    container_name: sandbox-apache
+    depends_on:
+    - fpm
