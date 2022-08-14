@@ -38,9 +38,11 @@ RUN true \
  && echo "xdebug.mode=debug" >> /usr/local/etc/php/php.ini \
 ;
 
+COPY vhosts.conf /etc/apache2/sites-available/000-default.conf
+
 # Modify www-data user to match system user
-ARG GROUP_ID="1001"
-ARG USER_ID="1001"
+ARG GROUP_ID="1000"
+ARG USER_ID="1000"
 RUN true \
  && groupmod www-data --gid "${GROUP_ID}" \
  && usermod www-data --uid "${USER_ID}" --gid www-data -d /var/www -s /bin/bash \

@@ -14,3 +14,5 @@ To log into the running container, run:
 ```
 docker exec -it sandbox-fpm bash
 ```
+
+You will find the contens of `/var/www/sandbox/` available from the host machine at: `http://localhost:8123`
