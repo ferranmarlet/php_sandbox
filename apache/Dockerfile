@@ -1,12 +1,12 @@
 ARG COMPOSER_VERSION="2.0.8"
-ARG PHP_VERSION="8.0.1"
+ARG PHP_VERSION="8.1.13"
 
 FROM php:${PHP_VERSION}-apache
 
-ARG XDEBUG_VERSION="3.0.2"
+ARG XDEBUG_VERSION="3.1.6"
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install minimal system requirements, PHP composer and Node
+# Install minimal system requirements, PHP and composer
 RUN true \
        && apt-get -qq update \
        && apt-get -qy install --no-install-recommends \
@@ -15,11 +15,9 @@ RUN true \
        git \
        && wget -qq -O /etc/apt/trusted.gpg.d/php.gpg "https://packages.sury.org/php/apt.gpg" \
        && echo "deb https://packages.sury.org/php/ $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/php${PHP_VERSION}.list \
-       && wget -qq -O- "https://deb.nodesource.com/setup_10.x" | bash - \
        && apt-get -qq update \
        && apt-get -qy install --no-install-recommends \
        "libzip-dev" \
-       nodejs \
        && apt-get -qy purge --auto-remove \
        lsb-release \
        gnupg \
@@ -51,6 +49,9 @@ RUN true \
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash \
+ && apt install symfony-cli
 
 USER www-data
 
